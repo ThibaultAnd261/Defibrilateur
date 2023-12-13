@@ -1,7 +1,4 @@
 import csv
-from collections import defaultdict
-
-FILENAME = "geodae.csv"
 
 def read_file (filename):
 
@@ -16,8 +13,10 @@ def read_file (filename):
 
     
 
-def main():
-    data = read_file(FILENAME)
-    print (data)
+# def main():
+#     data = read_file(FILENAME)
+#     # print (data)
+#     df = pd.DataFrame(data)
+#     print(df)
 
-main()
+# main()
