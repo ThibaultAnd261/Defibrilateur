@@ -16,15 +16,15 @@ def read_file (filename):
 
 def population_category(ville):
     if (int)(ville['PTOT']) < 5000:
-        return 'Village'
+        return 'Village (entre 0 et 5000)'
     elif (int)(ville['PTOT']) < 20000:
-        return 'Ville'
+        return 'Ville (entre 5000 et 20000)'
     elif (int)(ville['PTOT']) < 50000:
-        return 'Ville moyenne'
+        return 'Ville moyenne (entre 20000 et 50000)'
     elif (int)(ville['PTOT']) < 200000:
-        return 'Grande ville'
-    else:
-        return 'Metropole'
+        return 'Grande ville (entre 50000 et 200000)'
+    elif (int)(ville['PTOT']) >= 200000:
+        return 'Metropole (au-dessus de 200000)'
 
 
 def get_merged_dataframe():

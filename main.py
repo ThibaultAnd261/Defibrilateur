@@ -1,30 +1,24 @@
 from dash import Dash, html, dcc, callback, Output, Input, dash_table
 from get_data_api import get_merged_dataframe
-import pandas as pd
+import plotly.express as px
 
 df = get_merged_dataframe()
-# print(data)
-# df = pd.DataFrame(data)
 
-moyenne = df.groupby('categoryVille')['PTOT'].mean() # done
-#addition = df.groupby('categoryVille').size()
-print(moyenne)
-#print(addition)
+addition = df.groupby('categoryVille').size()
+# villeName = df.groupby('categoryVille')['c_com_nom'].unique()
+villeName = df.groupby('categoryVille')['c_com_nom'].nunique()
+
+moyenne = addition / villeName
+
+fig = px.bar(x=moyenne.index, y=moyenne.values, labels={'x': 'Nombre d\'habitants','y': 'Nombre moyen de défibrillateur'})
 
 app = Dash(__name__)
 
 app.layout = html.Div([
     html.H1(children='Title of Dash App', style={'textAlign':'center'}),
-    dcc.Graph(),
+    dcc.Graph(figure=fig),
     dash_table.DataTable(data=df.to_dict('records'))
 ])
-
-village = []
-ville = []
-ville_moyenne = []
-grande_ville = []
-metropole = []
-
 
 if __name__ == '__main__':
     app.run(debug=True)
