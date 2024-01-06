@@ -28,8 +28,8 @@ hist = px.histogram(
     nbins=60,
 )
 hist.update_layout(
-    title='Répartition du nombre de défibrillateurs en fonction du nombre d\'habitant',
-    xaxis_title='Nombre d\'habitant',
+    title='Répartition du nombre de défibrillateurs en fonction du nombre d\'habitants',
+    xaxis_title='Nombre d\'habitants',
     yaxis_title='Nombre de défibrillateur'
 )
 hist.update_yaxes(title_text='Nombre de défibrillateurs')
@@ -60,7 +60,7 @@ app.layout = html.Div([
         html.H2("Présentation", style={'color': 'darkblue'}),
         html.P("Bienvenue sur notre dashboard qui fournit des données sur le nombre de défibrillateurs en France métropolitaine.", 
             style={'fontSize': '18px', 'marginBottom': '10px'}),
-        html.P("Utilisez les fonctionnalités de l'application pour explorer les informations sur les emplacements des défibrillateurs ainsi que l'histogramme recensant le nombre de défibrillateur par habitant.", 
+        html.P("Utilisez les fonctionnalités de l'application pour explorer les informations sur les emplacements des défibrillateurs ainsi que l'histogramme recensant le nombre de défibrillateur par habitants.", 
             style={'fontSize': '18px', 'marginBottom': '10px'}),
         html.P("Utilisez les filtres proposés pour sélectionner les données spécifiques que vous souhaitez visualiser.", 
             style={'fontSize': '18px', 'marginBottom': '10px'})
@@ -143,8 +143,8 @@ def update_graph(filter_selected, days_selected, hours_selected):
         nbins=60,
     )
     updated_hist.update_layout(
-        title='Répartition du nombre de défibrillateurs en fonction du nombre d\'habitant',
-        xaxis_title='Nombre d\'habitant',
+        title='Répartition du nombre de défibrillateurs en fonction du nombre d\'habitants',
+        xaxis_title='Nombre d\'habitants',
         yaxis_title='Nombre de défibrillateur'
     )
     
