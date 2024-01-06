@@ -117,7 +117,7 @@ app.layout = html.Div([
     Input(component_id='checkbox-jours', component_property='value'),
     Input(component_id='checkbox-horaires', component_property='value')
 )
-def update_graph(filter_selected, days_selected, hours_selected):
+def update_graph_hist(filter_selected, days_selected, hours_selected):
     # vérification sur le type de défibrillateur choisi
     if filter_selected == "Aucun filtre":
         filtered_df = df
