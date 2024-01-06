@@ -1,3 +1,6 @@
+"""
+Fichier utilisé pour le rendu de l'application
+"""
 from dash import Dash, html, dcc, callback, Output, Input, dash_table
 from get_data_api import get_merged_dataframe, get_horaires_dispo, get_cities_with_arrondissement
 import plotly.express as px

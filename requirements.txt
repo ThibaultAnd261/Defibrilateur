@@ -1,0 +1,5 @@
+dash==2.14.2
+requests==2.31.0
+plotly==5.18.0
+folium==0.15.1
+pandas==2.1.3

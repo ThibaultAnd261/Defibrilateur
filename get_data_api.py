@@ -1,12 +1,22 @@
+"""
+    Fichier utilisé pour une manipulation sur les données de la dataframe
+"""
 import csv
 import pandas as pd
 
+# fichiers manipulés
 FILENAME_DEFIBRILLATEUR = "geodae.csv"
-FILENAME_COMMUNE_2019 = "Communes.csv"
-FILENAME_COMMUNE_2021 = "donnees_communes.csv"
+FILENAME_COMMUNE_2017 = "Communes.csv"
+FILENAME_COMMUNE_2019 = "donnees_communes.csv"
 
-# retourne le contenu du fichier sous forme de liste
 def read_file (filename: str) -> []:
+    """ retourne le contenu du fichier sous forme de liste de dictionnaires
+    Args:
+        filename (str): le nom du fichier de données (n lignes)
+    
+    Returns:
+        l (list): n-1 dictionnaires dont les clés sont les champs de la première ligne du fichier
+    """
     with open (filename, mode = 'r', encoding= 'utf8') as f :
         reader = csv.DictReader(f , delimiter = ";")
         l = []
@@ -15,16 +25,20 @@ def read_file (filename: str) -> []:
     
     return l
 
-# fusionne les dataframes en une seule manipulable et la retourne
 def get_merged_dataframe() -> pd.DataFrame:
+    """ fusionne les 3 dataframes en une seule manipulable
+    
+    Returns:
+        merged_df (DataFrame): dataframe qui sera manipulé par l'application dash avec les colonnes mergées
+    """
     dataDefibrilateur = read_file(FILENAME_DEFIBRILLATEUR)
     dfDef = pd.DataFrame(dataDefibrilateur) # transformation de la data sur les défibrillateurs en dataframe 
 
-    dataCommune2019 = read_file(FILENAME_COMMUNE_2019)
+    dataCommune2019 = read_file(FILENAME_COMMUNE_2017)
     dfCom1 = pd.DataFrame(dataCommune2019)
     dfCom1 = dfCom1.rename(columns={'DEPCOM': 'c_com_insee'}) # renommage de la colonne 'DEPCOM' par 'c_com_insee' pour faciliter le merge
     
-    dataCommune2021 = read_file(FILENAME_COMMUNE_2021)
+    dataCommune2021 = read_file(FILENAME_COMMUNE_2019)
     dfCom2 = pd.DataFrame(dataCommune2021)
     dfCom2['c_com_insee'] = dfCom2['CODDEP'] + dfCom2['CODCOM'].astype(str) # obtenir une colonne 'c_com_insee' sur dfCom2 pour faciliter le merge
 
@@ -36,8 +50,14 @@ def get_merged_dataframe() -> pd.DataFrame:
 
     return merged_df
 
-# retourne les horaires possibles d'après la dataframe
 def get_horaires_dispo(horaire_values: pd.Series) -> set[str]:
+    """ retourne les horaires possibles d'après la dataframe
+    Args:
+        horaire_values (pd.Series): les séries sur la colonne 'c_disp_h' de la dataframe mergée
+    
+    Returns:
+        horaires_dispo (set): liste ordonnée contenant les différentes possibilités de tranche horaire, utilisée pour les filtres de l'application Dash
+    """
     horaires_dispo = set()
 
     for value in horaire_values:
@@ -51,6 +71,13 @@ def get_horaires_dispo(horaire_values: pd.Series) -> set[str]:
     return horaires_dispo
 
 def get_cities_with_arrondissement(city_values: pd.Series) -> set[str]:
+    """ retourne les villes ayant 'Arrondissement' en nom d'après la dataframe
+    Args:
+        city_values (pd.Series): les séries sur la colonne 'COM' de la dataframe mergée
+    
+    Returns:
+        cities_with_arrondissement (set): liste ordonnée contenant les différentes villes ayant des arrondissements, utilisée pour la prévention dans l'application Dash
+    """
     cities_with_arrondissement = set()
     
     for city in city_values:
@@ -60,6 +87,7 @@ def get_cities_with_arrondissement(city_values: pd.Series) -> set[str]:
             
     return cities_with_arrondissement
 
+# Tests pour les retours
 # def main():
 #     merged_df = get_merged_dataframe()
 #     # print(merged_df.keys)
