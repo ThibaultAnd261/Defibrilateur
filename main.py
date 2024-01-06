@@ -1,7 +1,6 @@
-from dash import Dash, html, dcc, callback, Output, Input, dash_table
+from dash import Dash, html, dcc, callback, Output, Input
 from get_data_api import get_merged_dataframe, get_horaires_dispo
 import plotly.express as px
-import numpy as np
 import folium
 
 # Dataframe mergée 
@@ -9,6 +8,10 @@ df = get_merged_dataframe()
 
 # Horaires disponibles
 horaires_dispo = get_horaires_dispo(df['c_disp_h'].unique())
+
+# coordonnées de la France
+coordsFrance = (46.539758, 2.430331)
+map = folium.Map(location=coordsFrance, tiles='OpenStreetMap', zoom_start=6)
 
 # création de l'histogramme par défaut
 fig = px.histogram(
@@ -19,6 +22,20 @@ fig = px.histogram(
     nbins=60
 )
 
+# map de la France
+fig_map = px.scatter_mapbox(
+    df,
+    lat='c_lat_coor1',
+    lon='c_long_coor1',
+    zoom=3,
+    center={'lat': coordsFrance[0], 'lon': coordsFrance[1]},
+    mapbox_style="open-street-map",
+)
+fig_map.update_traces(marker_size=3, selector=dict(mode='markers'))
+fig_map.update_layout(
+    title='Localisation des défibrillateurs en France'
+)
+
 # liste des différents moments de disponibilité d'un défibrillateur
 jours_dispos = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche', '\"jours fériés\"', 'événements', '7j/7']
 
@@ -27,7 +44,7 @@ app = Dash(__name__)
 # layout de l'application
 app.layout = html.Div([
     html.H1(children='Défibrillateur en France métropolitaine', style={'textAlign':'center'}),
-    html.H2('Filtres de l\'histogramme:', style={'margin-top': '20px', 'font-weight': 'bold'}),
+    html.H2('Filtres pour l\'histogramme et la carte française :', style={'margin-top': '20px', 'font-weight': 'bold'}),
 
     html.Div([
         html.H3('Type de défibrillateur :'),
@@ -56,12 +73,13 @@ app.layout = html.Div([
         ], style={'display': 'flex', 'align-items': 'center', 'margin-top': '10px'}),
     ], style={'margin-top': '20px'}),
     dcc.Graph(figure=fig, id='graph-id'),
-    dash_table.DataTable(data=df.to_dict('records'))
+    dcc.Graph(figure=fig_map, id="map-id"),
 ], style={'padding' : '25px'})
 
 # fonction callback pour les affichages dynamiques
 @callback(
     Output(component_id='graph-id', component_property='figure'),
+    Output(component_id='map-id', component_property='figure'),
     Input(component_id='radio-value', component_property='value'),
     Input(component_id='checkbox-jours', component_property='value'),
     Input(component_id='checkbox-horaires', component_property='value')
@@ -92,7 +110,21 @@ def update_graph(filter_selected, days_selected, hours_selected):
         nbins=60
     )
     
-    return updated_fig
+    # mise à jour de la carte
+    updated_map = px.scatter_mapbox(
+        filtered_df,
+        lat='c_lat_coor1',
+        lon='c_long_coor1',
+        zoom=3,
+        center={'lat': coordsFrance[0], 'lon': coordsFrance[1]},
+        mapbox_style="open-street-map"
+    )
+    updated_map.update_traces(marker_size=3, selector=dict(mode='markers'))
+    updated_map.update_layout(
+        title='Localisation des défibrillateurs en France'
+    )
+    
+    return updated_fig, updated_map
 
 if __name__ == '__main__':
     app.run(debug=True)
