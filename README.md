@@ -29,7 +29,7 @@ python get_data.py
 ```bash
 python main.py
 ```
-2. Copiez-coller le lien suivant sur votre navigateur.
+2. Copiez-collez le lien suivant sur votre navigateur.
 ```bash
 http://127.0.0.1:8050/
 ```
