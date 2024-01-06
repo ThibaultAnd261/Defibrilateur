@@ -42,9 +42,9 @@ flowchart TD
   B --> |utilisation fichier|C[geodae.csv]
   B --> |utilisation fichier|D[Communes.csv]
   B --> |utilisation fichier|E[donnees_communes.csv]
-  C --> |générée|F[get_data.py]
-  D --> |générée|F[get_data.py]
-  E --> |générée|F[get_data.py]
+  C --> |généré|F[get_data.py]
+  D --> |généré|F[get_data.py]
+  E --> |généré|F[get_data.py]
   F --> G[Fin]
 ```
 
