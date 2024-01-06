@@ -50,16 +50,30 @@ def get_horaires_dispo(horaire_values: pd.Series) -> set[str]:
 
     return horaires_dispo
 
+def get_cities_with_arrondissement(city_values: pd.Series) -> set[str]:
+    cities_with_arrondissement = set()
+    
+    for city in city_values:
+        if 'Arrondissement' in city:
+            city = city.split()
+            cities_with_arrondissement.add(city[0])
+            
+    return cities_with_arrondissement
+
 # def main():
 #     merged_df = get_merged_dataframe()
+#     # print(merged_df.keys)
 #     # get_disp_j(merged_df)
-#     print(merged_df['c_disp_h'].unique())
+#     # print(merged_df['c_disp_h'].unique())
 #     # print(len(merged_df['c_disp_h'].unique()))
 #     # print("------")
 #     # print(set(merged_df['c_disp_h'].unique()))
 #     # print(len(set(merged_df['c_disp_h'].unique())))
-#     print("------")
-#     horaire = get_horaires_dispo(merged_df['c_disp_h'].unique())
-#     print(horaire)
+#     # print("------")
+#     # horaire = get_horaires_dispo(merged_df['c_disp_h'].unique())
+#     # print(horaire)
+#     # print(merged_df['COM'].unique())
+#     cities_with_arr = get_cities_with_arrondissement(merged_df['COM'])
+#     print(cities_with_arr)
 
 # main()
