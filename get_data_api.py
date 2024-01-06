@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 
 FILENAME_DEFIBRILLATEUR = "geodae.csv"
-FILENAME_COMMUNE_2019 = "communes.csv"
+FILENAME_COMMUNE_2019 = "Communes.csv"
 FILENAME_COMMUNE_2021 = "donnees_communes.csv"
 
 # retourne le contenu du fichier sous forme de liste
